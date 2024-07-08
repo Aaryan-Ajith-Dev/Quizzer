@@ -1,0 +1,33 @@
+/* src/Dashboard.css */
+.dashboard {
+  text-align: center;
+  padding: 50px;
+  background-color: #f4f4f9;
+}
+
+.greet {
+  font-size: 36px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+.title {
+  font-size: 30px;
+  color: #333;
+  margin: 30px;
+}
+
+.quizzes {
+  display: flex;
+  justify-content: space-between;
+}
+
+.body {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+  
