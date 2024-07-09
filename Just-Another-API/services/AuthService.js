@@ -10,20 +10,22 @@ const SECRET_ACCESS_TOKEN = process.env.SECRET_ACCESS_TOKEN;
 
 
 async function signup(userData) {
-    const accessToken = jwt.sign({ _id: userData._id }, SECRET_ACCESS_TOKEN, { expiresIn: '1h' });
     let password = userData.password;
-  
+    
     try {
         const hash = await bcrypt.hash(password, saltRounds);
         userData.password = hash;
         const user = new User(userData);
         await user.save();
+        let savedUser = User.findOne({ email: userData.email });
+        const accessToken = jwt.sign({ _id: savedUser._id }, SECRET_ACCESS_TOKEN, { expiresIn: '1h' });
         return {
             token: accessToken,
             msg: "signed in successfully",
             status: 200
         };
     } catch (err) {
+        User.findOneAndDelete({ email: userData.email });
         if ( err.code == 11000 ) {
             return {
                 token: null,
@@ -31,6 +33,7 @@ async function signup(userData) {
                 status: 409
             }
         }
+        console.log(err)
         return {
             token: null,
             msg: "Error during signup",
@@ -47,7 +50,7 @@ const login = async (userCreds) => {
     let response = null;
     let accessToken = null;
     try {
-        const user = await User.findOne({ name: userCreds.name })
+        const user = await User.findOne({ email: userCreds.email })
         if (!user) return {
             token: null,
             msg: "User not found",

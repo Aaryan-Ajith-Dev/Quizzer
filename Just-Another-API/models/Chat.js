@@ -8,5 +8,5 @@ const ChatSchema = mongoose.Schema({
     messages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Message' }] // fk to message model
 });
 
-const Chat = mongoose.model('Chats', SongSchema);
+const Chat = mongoose.model('Chats', ChatSchema);
 export default Chat;

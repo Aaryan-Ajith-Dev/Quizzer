@@ -6,7 +6,7 @@ import Navbar from './components/Navbar'
 import { Route, Routes } from 'react-router-dom'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/Signup'
-import MakeQuiz from './components/MakeQuiz'
+import MakeQuiz from './pages/MakeQuiz'
 
 function App() {
   return (

@@ -5,18 +5,22 @@ import connectDb from './config/db.js';
 import AuthFilter from './config/AuthFilter.js';
 import env from 'dotenv'
 
-env.config()
+env.config();
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT;
 const app = express();
 
-var corsOptions = {
-  origin: `http://localhost:${PORT}`,
+let corsOptions = {
+  origin: function (origin, callback) {
+    if (origin && origin.startsWith(`http://localhost:${PORT}`)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   optionsSuccessStatus: 200
 }
-
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use('/auth', AuthRouter);
 app.use(AuthFilter);

@@ -178,9 +178,8 @@ const MakeQuiz = () => {
           autoFocus
         />
         <TextField
-          className='quiz-name'
+          className='team-size'
           margin="normal"
-          required
           id={`team-size`}
           label="Team size"
           name="team-size"

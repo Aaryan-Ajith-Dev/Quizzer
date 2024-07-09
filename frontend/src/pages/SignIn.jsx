@@ -34,10 +34,26 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const userData = {
       email: data.get('email'),
-      password: data.get('password'),
-    });
+      password: data.get('password')
+    }
+    // console.log(userData);
+    fetch("http://localhost:3000/auth/login", { 
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(userData), 
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        localStorage.setItem('AuthToken', data.token);
+        alert(data.msg);
+        // console.log(data);
+      });
   };
 
   return (
@@ -87,6 +103,7 @@ export default function SignIn() {
               type="submit"
               fullWidth
               variant="contained"
+              onSubmit={handleSubmit}
               sx={{ mt: 3, mb: 2 }}
             >
               Sign In

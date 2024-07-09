@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { useNavigate } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function Copyright(props) {
@@ -31,13 +32,37 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const user = {
+      firstName: data.get('firstName'),
+      lastName: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
-    });
+      quizzes_made: [],
+      quizzes_attempted: [],
+      role: "USER"
+    }
+    // console.log(user);
+    fetch("http://localhost:3000/auth/signup", { 
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(user), 
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        localStorage.setItem('AuthToken', data.token);
+        alert(data.msg);
+        navigate('/dashboard')
+        // console.log(data);
+      });
   };
 
   return (
@@ -96,7 +121,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="password"
                   type="password"
                   id="password"
                   autoComplete="new-password"
