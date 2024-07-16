@@ -4,6 +4,8 @@ import AuthRouter from './routers/AuthRouter.js'
 import connectDb from './config/db.js';
 import AuthFilter from './config/AuthFilter.js';
 import env from 'dotenv'
+import UserRouter from './routers/UserRouter.js';
+import QuizRouter from './routers/QuizRouter.js';
 
 env.config();
 
@@ -22,8 +24,10 @@ let corsOptions = {
 }
 app.use(cors());
 app.use(express.json());
-app.use('/auth', AuthRouter);
 app.use(AuthFilter);
+app.use('/auth', AuthRouter);
+app.use('/user', UserRouter);
+app.use('/quiz', QuizRouter);
 
 connectDb();
 

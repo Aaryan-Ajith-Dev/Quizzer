@@ -22,7 +22,8 @@ async function signup(userData) {
         return {
             token: accessToken,
             msg: "signed in successfully",
-            status: 200
+            status: 200,
+            user: savedUser
         };
     } catch (err) {
         User.findOneAndDelete({ email: userData.email });
@@ -49,8 +50,9 @@ const login = async (userCreds) => {
     // check password match
     let response = null;
     let accessToken = null;
+    let user = null;
     try {
-        const user = await User.findOne({ email: userCreds.email })
+        user = await User.findOne({ email: userCreds.email })
         if (!user) return {
             token: null,
             msg: "User not found",
@@ -70,7 +72,8 @@ const login = async (userCreds) => {
     return {
         token: accessToken,
         msg: "Logged in successfully",
-        status: 200
+        status: 200,
+        user: user
     };
 }
 

@@ -13,6 +13,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useControlled } from '@mui/material';
+import {GlobalContext} from '../App';
 
 function Copyright(props) {
   return (
@@ -33,8 +35,8 @@ const defaultTheme = createTheme();
 
 export default function SignUp() {
   const navigate = useNavigate();
-
-  const handleSubmit = (event) => {
+  const { setToken, setUser } = React.useContext(GlobalContext);
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const user = {
@@ -47,22 +49,22 @@ export default function SignUp() {
       role: "USER"
     }
     // console.log(user);
-    fetch("http://localhost:3000/auth/signup", { 
+    const response = fetch("http://localhost:3000/auth/signup", { 
       method: "POST", 
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(user), 
     })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        localStorage.setItem('AuthToken', data.token);
-        alert(data.msg);
-        navigate('/dashboard')
-        // console.log(data);
-      });
+      
+    const userData = await (response).json()
+    alert(userData.msg);
+    if (response.ok) {
+      localStorage.setItem('AuthToken', userData.token);
+      navigate('/dashboard')
+      setToken(userData.token)
+      setUser(userData.user)
+    }
   };
 
   return (

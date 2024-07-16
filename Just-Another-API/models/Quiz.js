@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const QuizSchema = mongoose.Schema({
     name: { type: String, unique: true, required: true },
-    team_size: { type: String, default: 1, required: true },
+    team_size: { type: Number, default: 1, required: true },
     elements: [{
         question: String,
         noOfOptions: Number,

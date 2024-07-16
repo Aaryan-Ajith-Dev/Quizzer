@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import '../css/MakeQuiz.css';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import { Box, Button, Checkbox, List, ListItem } from '@mui/material';
+import { GlobalContext } from '../App';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const MakeQuiz = () => {
-  const [quiz, setQuiz] = useState({
+  const { user, setUser, token } = useContext(GlobalContext)
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [quiz, setQuiz] = useState(location.state && location.state.quiz ? location.state.quiz :
+  {
     name: "",
     team_size: null,
     elements: [
@@ -16,6 +22,23 @@ const MakeQuiz = () => {
       }
     ]
   });
+
+  const saveQuiz = async (quiz, id) => {
+    const response = await fetch('http://localhost:3000/quiz', { 
+      method: location.state ? "POST" : "PUT", 
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify(quiz), 
+    })
+    const data = await response.json()
+    if (response.ok) {
+      console.log(data)
+      alert(data.msg);
+      navigate('/dashboard');
+    }
+  }
 
   const handleDeleteQuestion = (index) => {
     setQuiz((prev) => ({
@@ -105,6 +128,7 @@ const MakeQuiz = () => {
           margin="normal"
           required
           id={`question-${index}`}
+          value={ele.question}
           label="Enter question"
           onChange={(event) => handleQuestionChange(index, event.target.value)}
           name="question"
@@ -114,6 +138,7 @@ const MakeQuiz = () => {
           className='optn-number'
           margin="normal"
           required
+          value={ele.noOfOptions}
           id={`optn-number-${index}`}
           label="Number of options"
           name="optn-number"
@@ -173,6 +198,7 @@ const MakeQuiz = () => {
           id="quiz-name"
           label="Quiz Name"
           name="quiz-name"
+          value={ quiz.name }
           autoComplete="quiz_name"
           onChange={(e) => setQuiz((prev) => ({ ...prev, name: e.target.value }))}
           autoFocus
@@ -182,6 +208,7 @@ const MakeQuiz = () => {
           margin="normal"
           id={`team-size`}
           label="Team size"
+          value={ quiz.team_size }
           name="team-size"
           type='number'
           onChange={(e) => setQuiz((prev) => ({ ...prev, team_size: e.target.value }))}
@@ -208,7 +235,7 @@ const MakeQuiz = () => {
         <Button
           variant='contained'
           onClick={() => {
-            console.log(quiz);
+            saveQuiz(quiz, quiz._id);
           }}
         >
           Save

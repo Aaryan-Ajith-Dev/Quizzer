@@ -31,3 +31,12 @@
   margin-right: auto;
 }
   
+.quiz_card_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.buttons {
+  flex-direction: row;
+}

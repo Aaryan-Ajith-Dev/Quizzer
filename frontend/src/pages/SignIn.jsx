@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
+import {GlobalContext} from '../App';
 
 function Copyright(props) {
   return (
@@ -31,29 +33,34 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate()
+  const { token, setToken, user, setUser } = React.useContext(GlobalContext)
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const userData = {
+    const userReq = {
       email: data.get('email'),
       password: data.get('password')
     }
     // console.log(userData);
-    fetch("http://localhost:3000/auth/login", { 
+    const response = await fetch("http://localhost:3000/auth/login", { 
       method: "POST", 
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(userData), 
+      body: JSON.stringify(userReq), 
     })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        localStorage.setItem('AuthToken', data.token);
-        alert(data.msg);
-        // console.log(data);
-      });
+    
+
+    const userData = await response.json();
+    console.log(userData);
+    alert(userData.msg);
+    if (response.ok) {
+      localStorage.setItem('AuthToken', userData.token);
+      setToken(userData.token);
+      setUser(userData.user);
+      navigate('/dashboard');
+    }
   };
 
   return (
