@@ -16,8 +16,8 @@ async function signup(userData) {
         const hash = await bcrypt.hash(password, saltRounds);
         userData.password = hash;
         const user = new User(userData);
-        await user.save();
-        let savedUser = User.findOne({ email: userData.email });
+        const savedUser = await user.save();
+        // let savedUser = await User.findOne({ email: userData.email });
         const accessToken = jwt.sign({ _id: savedUser._id }, SECRET_ACCESS_TOKEN, { expiresIn: '1h' });
         return {
             token: accessToken,

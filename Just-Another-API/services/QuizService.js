@@ -67,12 +67,42 @@ const updateQuiz = async (quiz) => {
     }
 }
 
-const deleteQuiz = async (id) => {
+const deleteQuiz = async (id, user) => {
     try {
         const quiz = await Quiz.findOneAndDelete({ _id: id })
+        User.updateOne({ _id: user._id }, {
+            $pullAll: {
+                quizzes_made: [{_id: id}],
+            },
+        });
+        
         return {
             quiz: quiz,
             msg: "deleted successfully",
+            status: 200
+        };
+    }
+    catch (err) {
+        console.log(err)
+        return {
+            quiz: null,
+            msg: err.name,
+            status: 500
+        };
+    }
+}
+
+const updateAnswers = async (chosenAnswers, user, quiz) => {
+    try {
+        quiz.attempts.push({
+            user: user,
+            answers: chosenAnswers
+        })
+        
+        const new_quiz = await Quiz.findOneAndUpdate({ _id: quiz._id }, quiz)
+        return {
+            quiz: quiz,
+            msg: "quiz taken successfully",
             status: 200
         };
     }
@@ -90,5 +120,6 @@ export {
     createQuiz,
     getQuiz,
     updateQuiz,
-    deleteQuiz
+    deleteQuiz,
+    updateAnswers
 }

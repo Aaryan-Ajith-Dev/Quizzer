@@ -40,16 +40,16 @@ export default function SignUp() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const user = {
-      firstName: data.get('firstName'),
-      lastName: data.get('lastName'),
+      first_name: data.get('firstName'),
+      last_name: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
       quizzes_made: [],
       quizzes_attempted: [],
       role: "USER"
     }
-    // console.log(user);
-    const response = fetch("http://localhost:3000/auth/signup", { 
+    console.log(user);
+    const response = await fetch("http://localhost:3000/auth/signup", { 
       method: "POST", 
       headers: {
         "Content-Type": "application/json"
@@ -57,7 +57,7 @@ export default function SignUp() {
       body: JSON.stringify(user), 
     })
       
-    const userData = await (response).json()
+    const userData = await response.json()
     alert(userData.msg);
     if (response.ok) {
       localStorage.setItem('AuthToken', userData.token);

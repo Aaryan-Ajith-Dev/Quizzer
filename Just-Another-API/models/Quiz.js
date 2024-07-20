@@ -10,6 +10,10 @@ const QuizSchema = mongoose.Schema({
             value: String,
             isAnswer: Boolean
         }],
+    }],
+    attempts: [{
+        user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        answers: [Number]
     }]
 })
 

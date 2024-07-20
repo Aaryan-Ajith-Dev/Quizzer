@@ -1,5 +1,5 @@
 import express from 'express'
-import { createQuiz, getQuiz, updateQuiz, deleteQuiz } from '../services/QuizService.js';
+import { createQuiz, getQuiz, updateQuiz, deleteQuiz, updateAnswers } from '../services/QuizService.js';
 import { getUserFromToken } from '../services/UserService.js';
 
 const QuizRouter = express.Router();
@@ -23,6 +23,16 @@ QuizRouter.get('/:id', async (req, res) => {
     res.send(response)
 })
 
+QuizRouter.post('/attempt', async (req, res) => {   // need to test
+    let response = null;
+    const header = req.headers;
+    const token = header.authorization.substring(7);
+    const userRes = await getUserFromToken(token);
+    response = await updateAnswers(req.body.answers, userRes.user, req.body.quiz);
+    res.status(response.status)
+    res.send(response)
+})
+
 QuizRouter.post('/', async (req, res) => {
     let response = null;
     response = await updateQuiz(req.body)
@@ -30,9 +40,12 @@ QuizRouter.post('/', async (req, res) => {
     res.send(response)
 })
 
-QuizRouter.delete('/:id', async (req, res) => {
+QuizRouter.delete('/:id', async (req, res) => { // need to test
     let response = null;
-    response = await deleteQuiz(req.params.id)
+    const header = req.headers;
+    const token = header.authorization.substring(7);
+    const userRes = await getUserFromToken(token);
+    response = await deleteQuiz(req.params.id, userRes.user)
     res.status(response.status)
     res.send(response)
 })

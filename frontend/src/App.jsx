@@ -48,7 +48,7 @@ function App() {
   const [user, setUser] = useState(null);
   useEffect(() => { fetchUserData(setUser, setToken) }, []);
 
-
+  
   return (
     <GlobalContext.Provider value={{ token, setToken, user, setUser }}>
       <Navbar />
@@ -58,8 +58,9 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path='/quiz/make' element={<MakeQuiz />} />
-        <Route path='quiz/take' element={<TakeQuiz />} />
+        <Route path='/quiz/take' element={<TakeQuiz />} />
       </Routes>
+      
     </GlobalContext.Provider>
   )
 }

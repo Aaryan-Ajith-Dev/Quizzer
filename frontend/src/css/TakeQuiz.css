@@ -2,7 +2,7 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
 }
-  
+
 .take-quiz-page {
     justify-content: center;
     background: linear-gradient(135deg, #98c3ff, #c3cfe2);
@@ -10,7 +10,7 @@ body {
     padding: 40px;
     text-align: center;
 }
-  
+
 .content {
     display: flex;
     flex-direction: column;
@@ -19,32 +19,32 @@ body {
     min-height: 100vh;
     text-align: center;
 }
-  
+
 .quiz-name {
     color: #333;
     font-weight: bold;
     margin-bottom: 20px;
 }
-  
+
 .elements {
     margin-bottom: 30px;
     width: 100%;
     max-width: 800px;
 }
-  
+
 .question {
     padding-bottom: 20px;
     font-size: 24px;
     color: #444;
 }
-  
+
 .options-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
 }
-  
+
 .option-card {
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
@@ -52,22 +52,22 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-  
+
 .option-card:hover {
     transform: translateY(0px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
-  
+
 .option-card .MuiCardContent-root {
     padding: 20px;
 }
-  
-.option-card h6 {
+
+.opn {
     margin: 0;
     font-size: 18px;
     color: #333;
 }
-  
+
 .navigation-buttons {
     display: flex;
     justify-content: space-between;
@@ -75,7 +75,16 @@ body {
     max-width: 350px;
     margin-top: 20px;
 }
-  
+
 .navigation-buttons .MuiButton-root {
     width: 48%;
+}
+
+.chosen-option-card {
+    background-color: rgba(25, 118, 210, 0.3); /* Light background color */
+}
+
+.chosen-option-card .MuiCardContent-root {
+    background-color: rgba(25, 118, 210, 0.3); /* Apply background color to the content area as well */
+    padding: 20px;
 }
