@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom';
 import { GlobalContext } from '../App';
 import { useNavigate } from 'react-router-dom';
 
-const pages = ['Products', 'Pricing', 'Home'];
+const pages = ['Pricing', 'Home', 'About Us'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function Navbar() {
@@ -31,8 +31,10 @@ function Navbar() {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (page) => {
     setAnchorElNav(null);
+    if (page === 'Dashboard') navigate('/dashboard');
+    else if (page == 'Home') navigate('/');
   };
 
   const handleCloseUserMenu = (setting) => {
@@ -40,9 +42,6 @@ function Navbar() {
       localStorage.clear();
       navigate('/');
       window.location.reload();
-    }
-    else if (setting === 'Dashboard') {
-      navigate('/dashboard')
     }
     setAnchorElUser(null);
   };
@@ -94,13 +93,13 @@ function Navbar() {
                 horizontal: 'left',
               }}
               open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
+              onClose={()=>handleCloseNavMenu(null)}
               sx={{
                 display: { xs: 'block', md: 'none' },
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={(page)=>handleCloseNavMenu(page)}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -129,7 +128,7 @@ function Navbar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={()=>handleCloseNavMenu(page)}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}

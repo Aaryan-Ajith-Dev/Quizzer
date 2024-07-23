@@ -17,11 +17,10 @@ async function signup(userData) {
         userData.password = hash;
         const user = new User(userData);
         const savedUser = await user.save();
-        // let savedUser = await User.findOne({ email: userData.email });
         const accessToken = jwt.sign({ _id: savedUser._id }, SECRET_ACCESS_TOKEN, { expiresIn: '1h' });
         return {
             token: accessToken,
-            msg: "signed in successfully",
+            msg: "signed up successfully",
             status: 200,
             user: savedUser
         };
@@ -30,7 +29,7 @@ async function signup(userData) {
         if ( err.code == 11000 ) {
             return {
                 token: null,
-                msg: err.name,
+                msg: "User already exists",
                 status: 409
             }
         }
@@ -61,6 +60,12 @@ const login = async (userCreds) => {
         const match = await bcrypt.compare(userCreds.password, user.password);
         if (match) {
             accessToken = jwt.sign({ _id: user._id }, SECRET_ACCESS_TOKEN, { expiresIn: '1h' });
+        } else {
+            return {
+                    token: null,
+                    msg: "Wrong password",
+                    status: 401
+                };
         }
     } catch (err) {
         return {

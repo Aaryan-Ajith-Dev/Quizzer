@@ -4,15 +4,21 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { GlobalContext } from '../App';
+import { GlobalContext, fetchUserData } from '../App';
 
 const Dashboard = () => {
-  const { user, setUser, token } = useContext(GlobalContext);
+  const { user, setUser, token, setToken } = useContext(GlobalContext);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   console.log("Dashboard user:", user);  // Check user data
-  // }, [user]);
+  useEffect(() => {
+    const fetch = async (setUser, setToken) => {
+      await fetchUserData(setUser, setToken);
+      setLoading(false);
+    }
+    if (loading)
+      fetch(setUser, setToken);
+  }, [user]);
 
   const handleDeleteQuiz = async (id) => {
     const response = await fetch(`http://localhost:3000/quiz/${id}`, { 
@@ -30,8 +36,8 @@ const Dashboard = () => {
     }
   };
 
-  if (!user) {
-    return <p>Loading...</p>;  // Add a loading state
+  if (loading) {
+    return <p>Loading...</p>;
   }
 
   return (
