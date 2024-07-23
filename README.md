@@ -33,7 +33,7 @@ Quizzer is a web application where users can create and take quizzes. The platfo
 
 1. **Clone the repository**
     ```sh
-    git clone https://github.com/your-username/quizzer.git
+    git clone https://github.com/Aaryan-Ajith-Dev/quizzer.git
     cd quizzer
     ```
 
