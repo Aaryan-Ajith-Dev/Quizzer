@@ -24,7 +24,7 @@ const HomePage = () => {
             navigate('/signin') :
             navigate('/dashboard')
         }} >Get Started</Button>
-        <Button variant="outlined" >Join a quiz</Button>
+        <Button variant="outlined" >Take a quiz</Button>
       </div>
     </div>
   );
