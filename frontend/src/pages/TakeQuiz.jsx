@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
-import { Card, CardContent, Typography, Grid, Button } from "@mui/material";
+import { Card, CardContent, Typography, Grid, Button, TextField } from "@mui/material";
 import '../css/TakeQuiz.css';
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { GlobalContext } from "../App";
@@ -10,38 +10,9 @@ const TakeQuiz = () => {
   const { token } = useContext(GlobalContext);
   const handle = useFullScreenHandle();
   const [takeTest, setTakeTest] = useState(false);
-  const [quiz, setQuiz] = useState(location.state && location.state.quiz ? location.state.quiz : {
-    name: "testing",
-    team_size: 1,
-    elements: [
-      {
-        question: "What is this",
-        noOfOptions: 2,
-        options: [{
-          value: 'True',
-          isAnswer: null
-        },
-        {
-          value: 'False',
-          isAnswer: null
-        }],
-      },
-      {
-        question: "What is this",
-        noOfOptions: 2,
-        options: [{
-          value: 'Trevelling',
-          isAnswer: null
-        },
-        {
-          value: 'False',
-          isAnswer: null
-        }],
-      }
-    ]
-  });
-
-  const [answers, setAnswers] = useState(Array(quiz.elements.length));
+  const [quiz, setQuiz] = useState(location.state && location.state.quiz ? location.state.quiz : null);
+  const [quizId, setQuizId] = useState('');
+  const [answers, setAnswers] = useState(quiz ? Array(quiz.elements.length) : 0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   const optionMapping = {
@@ -68,6 +39,22 @@ const TakeQuiz = () => {
     }
   }
 
+  const findQuizById = async () => {
+    const response = await fetch(`http://localhost:3000/quiz/attempt/${quizId}`, { 
+      method: "GET", 
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+    })
+    const data = await response.json()
+    if (response.ok) {
+      console.log(data)
+      setQuiz(data.quiz);
+      alert(data.msg);
+    } 
+  }
+
   const handleNextQuestion = () => {
     setCurrentQuestionIndex(prevIndex => prevIndex + 1);
   };
@@ -87,29 +74,32 @@ const TakeQuiz = () => {
     }
   };
 
-  useEffect(() => {
-    document.addEventListener("fullscreenchange", handleFullScreenChange);
-    document.addEventListener("webkitfullscreenchange", handleFullScreenChange);
-    document.addEventListener("mozfullscreenchange", handleFullScreenChange);
-    document.addEventListener("MSFullscreenChange", handleFullScreenChange);
-    return () => {
-      document.removeEventListener("fullscreenchange", handleFullScreenChange);
-      document.removeEventListener("webkitfullscreenchange", handleFullScreenChange);
-      document.removeEventListener("mozfullscreenchange", handleFullScreenChange);
-      document.removeEventListener("MSFullscreenChange", handleFullScreenChange);
-    };
-  }, []);
-
   return (
     <FullScreen handle={handle}>
       <div className="take-quiz-page">
         {!takeTest ? (
-          <>
-            <Button variant="contained" onClick={handleStartQuiz}>
-              Start Quiz and Enter Fullscreen
-            </Button>
-            <Typography variant="h4" className="quiz-name">Name: {quiz.name}</Typography>
-          </>
+          <div className="start-quiz-container">
+            {quiz ? (
+              <>
+                <Button variant="contained" onClick={handleStartQuiz} className="start-quiz-button">
+                  Start Quiz and Enter Fullscreen
+                </Button>
+                <Typography variant="h4" className="quiz-name">Name: {quiz.name}</Typography>
+              </>
+            ) : (
+              <div className="search-container">
+                <TextField
+                  label="Quiz ID"
+                  onChange={(e) => setQuizId(e.target.value)}
+                  value={quizId}
+                  name="quiz_id"
+                />
+                <Button variant="contained" className="search-button" onClick={findQuizById}>
+                  Search!
+                </Button>
+              </div>
+            )}
+          </div>
         ) : (
           <div className="content">
             <div className="elements">
@@ -133,8 +123,6 @@ const TakeQuiz = () => {
                   </Grid>
                 )}
               </Grid>
-              {/* <br />
-              <Button onClick={handleAnswerCheck}>Check answer</Button> */}
             </div>
             <div className="navigation-buttons">
               <Button variant="outlined" onClick={handlePreviousQuestion} disabled={currentQuestionIndex === 0}>

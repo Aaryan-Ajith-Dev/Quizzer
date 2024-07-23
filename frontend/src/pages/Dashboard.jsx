@@ -50,9 +50,10 @@ const Dashboard = () => {
         {user.quizzes_made && user.quizzes_made.map((quiz, index) =>
           <Card className='quiz_card' key={index}>
             <CardContent className='quiz_card_content'>
+              <span className='quiz-id'>Quiz Id: {quiz._id}</span>
               <span>Quiz Name: {quiz.name}</span>
               <span>Number of questions: {quiz.elements && quiz.elements.length}</span>
-              <div className='buttons'>
+              <div className='dbuttons'>
                 <Button onClick={() => { 
                   navigate('/quiz/make', {
                     state: { quiz: quiz }
@@ -68,7 +69,7 @@ const Dashboard = () => {
             </CardContent>
           </Card>
         )}
-        <Button variant="outlined" onClick={() => navigate('/quiz/make', {
+        <Button variant="outlined" className="new-quiz-button" onClick={() => navigate('/quiz/make', {
           state: null
         })}>New Quiz</Button>
       </div>
@@ -77,9 +78,10 @@ const Dashboard = () => {
         {user.quizzes_attempted && user.quizzes_attempted.map((quiz, index) => 
           <Card className='quiz_card' key={index}>
             <CardContent className='quiz_card_content'>
+              <span className='quiz-id'>Quiz Id: {quiz._id}</span>
               <span>Quiz Name: {quiz.name}</span>
               <span>Number of questions: {quiz.elements && quiz.elements.length}</span>
-              <div className='buttons'>
+              <div className='dbuttons'>
                 <Button>Edit</Button>
                 <Button>Test</Button>
               </div>

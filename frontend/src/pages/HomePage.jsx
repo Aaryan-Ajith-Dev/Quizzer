@@ -24,7 +24,11 @@ const HomePage = () => {
             navigate('/signin') :
             navigate('/dashboard')
         }} >Get Started</Button>
-        <Button variant="outlined" >Take a quiz</Button>
+        <Button variant="outlined" onClick={() => {
+          user == null ?
+          navigate('/signin') :
+          navigate('/quiz/take')
+        }}>Take a quiz</Button>
       </div>
     </div>
   );

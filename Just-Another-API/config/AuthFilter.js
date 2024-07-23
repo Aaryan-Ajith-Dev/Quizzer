@@ -25,7 +25,7 @@ const isValid = (token) => {
 }
 
 const AuthFilter = (req, res, next) => {
-    if (req.originalUrl != undefined && req.originalUrl.substring(0, 5) == '/auth')
+    if (req.originalUrl != undefined && (req.originalUrl.substring(0, 5) == '/auth')) 
         next();
     else {
         const header = req.headers;

@@ -16,7 +16,7 @@ QuizRouter.put('/', async (req, res) => {
     res.send(response)
 })
 
-QuizRouter.get('/:id', async (req, res) => {
+QuizRouter.get('/attempt/:id', async (req, res) => {
     let response = null;
     response = await getQuiz(req.params.id)
     res.status(response.status)
