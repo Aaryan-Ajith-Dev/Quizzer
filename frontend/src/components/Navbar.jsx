@@ -33,8 +33,7 @@ function Navbar() {
 
   const handleCloseNavMenu = (page) => {
     setAnchorElNav(null);
-    if (page === 'Dashboard') navigate('/dashboard');
-    else if (page == 'Home') navigate('/');
+    if (page == 'Home') navigate('/');
   };
 
   const handleCloseUserMenu = (setting) => {
@@ -42,6 +41,9 @@ function Navbar() {
       localStorage.clear();
       navigate('/');
       window.location.reload();
+    }
+    else if (setting == 'Dashboard') {
+      navigate('/dashboard')
     }
     setAnchorElUser(null);
   };
