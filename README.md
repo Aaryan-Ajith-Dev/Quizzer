@@ -75,11 +75,11 @@ Quizzer is a web application where users can create and take quizzes. The platfo
 
 ### Quiz Management
 
-- **GET** `/quiz/:id` - Gets quiz with id `id`.
-- **PUT** `/api/quiz` - Create a new quiz under the sender.
-- **POST** `/api/quiz/:id` - Update an existing quiz.
-- **DELETE** `/api/quiz/:id` - Delete a quiz.
+- **GET** `/quiz/attempt/:id` - Gets quiz with id `id`.
+- **PUT** `/quiz` - Create a new quiz under the sender.
+- **POST** `/quiz/:id` - Update an existing quiz.
+- **DELETE** `/quiz/:id` - Delete a quiz.
 
 ### Quiz Taking
 
-- **POST** `/api/quiz/attempt` - Submit quiz answers.
+- **POST** `/quiz/attempt` - Submit quiz answers.
