@@ -5,6 +5,7 @@ const QuizSchema = mongoose.Schema({
     team_size: { type: Number, default: 1, required: true },
     elements: [{
         question: String,
+        marks: Number,
         noOfOptions: Number,
         options: [{
             value: String,

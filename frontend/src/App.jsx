@@ -8,6 +8,7 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/Signup'
 import MakeQuiz from './pages/MakeQuiz'
 import TakeQuiz from './pages/TakeQuiz'
+import Analytics from './pages/Analytics'
 
 const GlobalContext = createContext(null)
 
@@ -59,6 +60,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path='/quiz/make' element={<MakeQuiz />} />
         <Route path='/quiz/take' element={<TakeQuiz />} />
+        <Route path='/analyse/quiz?=:quiz_id' element={<Analytics/>} />
       </Routes>
       
     </GlobalContext.Provider>
