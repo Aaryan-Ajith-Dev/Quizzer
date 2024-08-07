@@ -60,7 +60,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path='/quiz/make' element={<MakeQuiz />} />
         <Route path='/quiz/take' element={<TakeQuiz />} />
-        <Route path='/analyse/quiz?=:quiz_id' element={<Analytics/>} />
+        <Route path='/analyse' element={<Analytics />} />
       </Routes>
       
     </GlobalContext.Provider>

@@ -18,6 +18,7 @@ const MakeQuiz = () => {
       {
         question: "",
         noOfOptions: 0,
+        score: 0,
         options: [],
       }
     ]
@@ -119,6 +120,19 @@ const MakeQuiz = () => {
     });
   }
 
+  const handleScoreChange = (index, value) => {
+    setQuiz((prev) => {
+      const newQuiz = { ...prev };
+      const newElements = [...newQuiz.elements];
+      newElements[index] = {
+        ...newElements[index],
+        score: value
+      };
+      newQuiz.elements = newElements;
+      return newQuiz;
+    });
+  }
+
   const renderQuiz = (quiz) => (
     quiz.elements.map((ele, index) => (
       <Paper elevation={2} className='element' key={index}>
@@ -132,6 +146,18 @@ const MakeQuiz = () => {
           label="Enter question"
           onChange={(event) => handleQuestionChange(index, event.target.value)}
           name="question"
+          autoFocus
+        />
+        <TextField
+          className='score'
+          margin="normal"
+          required
+          id={`score-${index}`}
+          value={ele.score}
+          label="Enter score"
+          onChange={(event) => handleScoreChange(index, event.target.value)}
+          name="score"
+          type='number'
           autoFocus
         />
         <TextField

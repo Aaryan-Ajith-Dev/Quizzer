@@ -40,6 +40,7 @@ const getQuiz = async (id) => {
         };
     }
     catch (err) {
+        // console.log(err)
         return {
             quiz: null,
             msg: err.name,

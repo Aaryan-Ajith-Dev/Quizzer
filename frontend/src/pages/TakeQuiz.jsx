@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Card, CardContent, Typography, Grid, Button, TextField } from "@mui/material";
 import '../css/TakeQuiz.css';
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
@@ -7,6 +7,7 @@ import { GlobalContext } from "../App";
 
 const TakeQuiz = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { token } = useContext(GlobalContext);
   const handle = useFullScreenHandle();
   const [takeTest, setTakeTest] = useState(false);
@@ -35,7 +36,13 @@ const TakeQuiz = () => {
     if (response.ok) {
       console.log(data)
       alert(data.msg);
-      window.location.reload()
+      // add id to link to avoid refresh errors
+      navigate("/analyse", {
+        state: {
+          quiz_id: quiz._id
+        }
+      })
+      // window.location.reload()
     }
   }
 
