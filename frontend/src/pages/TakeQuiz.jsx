@@ -37,11 +37,7 @@ const TakeQuiz = () => {
       console.log(data)
       alert(data.msg);
       // add id to link to avoid refresh errors
-      navigate("/analyse", {
-        state: {
-          quiz_id: quiz._id
-        }
-      })
+      navigate(`/analyse/${quiz._id}`)
       // window.location.reload()
     }
   }

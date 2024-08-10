@@ -68,6 +68,32 @@ const updateQuiz = async (quiz) => {
     }
 }
 
+const deleteAttemptedQuiz = async (id, user) => {
+    try {
+        await User.updateOne(
+            { _id: user._id },
+            {
+                $pullAll: {
+                    quizzes_attempted: [{ _id: id }]
+                }
+            }
+        );
+        
+        return {
+            msg: "Deleted successfully",
+            status: 200
+        };
+    } catch (err) {
+        console.log(err);
+        return {
+            msg: err.message,
+            status: 500
+        };
+    }
+};
+
+
+
 const deleteQuiz = async (id, user) => {
     try {
         const quiz = await Quiz.findOneAndDelete({ _id: id })
@@ -99,6 +125,9 @@ const updateAnswers = async (chosenAnswers, user, quiz) => {
             user: user,
             answers: chosenAnswers
         })
+
+        user.quizzes_attempted.push(quiz)
+        await User.findOneAndUpdate({ _id: user._id }, user);
         
         const new_quiz = await Quiz.findOneAndUpdate({ _id: quiz._id }, quiz)
         return {
@@ -122,5 +151,6 @@ export {
     getQuiz,
     updateQuiz,
     deleteQuiz,
-    updateAnswers
+    updateAnswers,
+    deleteAttemptedQuiz
 }

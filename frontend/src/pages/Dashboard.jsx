@@ -20,6 +20,22 @@ const Dashboard = () => {
       fetch(setUser, setToken);
   }, [user]);
 
+  const handleDeleteAttemptedQuiz = async (id) => {
+    const response = await fetch(`http://localhost:3000/quiz/attempt/${id}`, { 
+      method: "DELETE", 
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+    });
+    const data = await response.json();
+    if (response.ok) {
+      console.log(data);
+      alert(data.msg);
+      window.location.reload();
+    }
+  }
+
   const handleDeleteQuiz = async (id) => {
     const response = await fetch(`http://localhost:3000/quiz/${id}`, { 
       method: "DELETE", 
@@ -82,9 +98,9 @@ const Dashboard = () => {
               <span>Quiz Name: {quiz.name}</span>
               <span>Number of questions: {quiz.elements && quiz.elements.length}</span>
               <div className='dbuttons'>
-                <Button>Edit</Button>
-                <Button>Test</Button>
+                <Button>Review</Button>
               </div>
+              <Button color='error' variant='outlined' onClick={() => handleDeleteAttemptedQuiz(quiz._id)}>Delete</Button>
             </CardContent>
           </Card>
         )}
