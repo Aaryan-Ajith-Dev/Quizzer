@@ -60,7 +60,7 @@ Quizzer is a web application where users can create and take quizzes. The platfo
 2. **Start the frontend server**
     ```sh
     cd ../frontend
-    npm start
+    npm run dev
     ```
 
 3. **Access the application**
